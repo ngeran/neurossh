@@ -1,0 +1,44 @@
+# --- NEURO_SSH ARCHIVE ---
+
+# Python Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+bin/
+lib/
+include/
+
+# --- SECURITY & SENSITIVE DATA ---
+# Never commit credentials or keys to git
+vault.key
+identities.yaml
+*.pem
+*.key
+*.pub
+ssh_config
+.env
+
+# --- APPLICATION DATA ---
+# Ignore the local session database so each portable 
+# instance maintains its own local node list.
+sessions.yaml
+sessions.json
+
+# --- OS & TOOLS ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.log
+
+# --- PACKAGING ---
+dist/
+build/
+*.egg-info/

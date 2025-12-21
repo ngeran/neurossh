@@ -1,0 +1,133 @@
+/* GLOBAL SETTINGS */
+Screen { 
+    background: #050505; 
+    color: #d1d1d1; 
+}
+
+/* SIDEBAR & TREE */
+#sidebar { 
+    width: 32; 
+    background: #0a0a0c; 
+    border-right: double #5f5faf; 
+}
+
+#sidebar-title {
+    background: #1a1a2e; 
+    color: #00ffff; 
+    text-align: center;
+    text-style: bold; 
+    padding: 1; 
+    border-bottom: solid #5f5faf;
+}
+
+#session-tree {
+    background: #0a0a0c;
+    color: #8787af;
+}
+
+#session-tree:focus { 
+    border: solid #00ffff; 
+    background: #0d0d15; 
+    color: #ffffff;
+}
+
+/* --- TABS SYSTEM --- */
+Tabs { 
+    background: #0a0a0c; 
+    height: 3; 
+    border-bottom: solid #5f5faf;
+}
+
+/* Fix: Neutralize the built-in Tabs bar background */
+Tabs > TabsBar {
+    background: #0a0a0c;
+}
+
+/* Fix: Ensure the built-in underline matches your cyan */
+Tabs > Underline {
+    background: #00ffff;
+    height: 1;
+}
+
+Tab {
+    color: #4e4e70 !important;
+    background: #0a0a0c;
+    text-style: none;
+    border: none;
+    padding: 0 2;
+}
+
+/* ACTIVE TAB: Cyan Title + Neon Cyan tall line */
+Tab.-active { 
+    background: #1a1a2e; 
+    color: #00ffff !important; 
+    text-style: bold; 
+    border-bottom: tall #00ffff; 
+}
+
+/* ROLLOVER: Pure White Text */
+Tab:hover {
+    color: #ffffff !important;
+    background: #1a1a2e;
+}
+
+/* --- TERMINAL --- */
+CyberTerminal { 
+    background: #000; 
+    color: #e4e4e4; 
+    height: 1fr; 
+    padding: 1; 
+}
+
+CyberTerminal:focus { 
+    border: double #00ffff; 
+}
+
+/* --- MODALS & INPUTS --- */
+#modal-dialog {
+    width: 60; 
+    height: auto; 
+    background: #0a0a0c; 
+    border: thick #5f5faf;
+    padding: 1 2; 
+    /* Ensure modal stays centered */
+    align: center middle;
+}
+
+#modal-title { 
+    color: #00ffff; 
+    text-align: center; 
+    margin-bottom: 1; 
+    text-style: bold; 
+}
+
+.field-label { 
+    color: #5f5faf; 
+    margin-top: 1; 
+    text-style: bold; 
+}
+
+Input, Select { 
+    margin-bottom: 1; 
+    background: #000; 
+    color: #00ffff; 
+    border: tall #1a1a2e; 
+}
+
+/* Fixed content-align for button rows */
+.button-row { 
+    content-align: center middle; 
+    width: 100%; 
+    height: 3; 
+    margin-top: 1; 
+}
+
+.btn-neuro-confirm { background: #5f5faf; color: white; margin: 0 1; }
+.btn-neuro-cancel { background: #1a1a2e; color: #8787af; margin: 0 1; }
+
+/* Scrollbar customization for a cleaner look */
+* {
+    scrollbar-color: #5f5faf;
+    scrollbar-color-hover: #00ffff;
+    scrollbar-size: 1 1;
+}
