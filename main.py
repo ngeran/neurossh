@@ -127,7 +127,7 @@ class ManageIdentitiesModal(ModalScreen):
 # --- MAIN APP ---
 
 class NeuroSSH(App):
-    TITLE = "NEURO_SSH // PORTABLE"
+    TITLE = "N Ξ U R O - S S H"
     CSS_PATH = "neuro.tcss"
     BINDINGS = [
         ("ctrl+n", "new_session", "New"),
