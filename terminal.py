@@ -12,8 +12,8 @@ class CyberTerminal(Static):
     def __init__(self, config, **kwargs):
         super().__init__("INITIALIZING NEURAL LINK...", **kwargs)
         self.config = config
-        # Virtual terminal emulator screen
-        self.terminal_screen = pyte.Screen(120, 40)
+        # Virtual terminal emulator screen - balanced size for scrollback vs performance
+        self.terminal_screen = pyte.Screen(120, 100)  # 100 lines for scrollback
         self.stream = pyte.Stream(self.terminal_screen)
         self.channel = None
         self.client = None
@@ -45,8 +45,8 @@ class CyberTerminal(Static):
         }
 
     def on_mount(self):
-        # Refresh the UI every 50ms
-        self.set_interval(0.05, self.update_terminal)
+        # Refresh the UI every 100ms (reduced from 50ms for better performance)
+        self.set_interval(0.1, self.update_terminal)
         threading.Thread(target=self.connect_ssh, daemon=True).start()
 
     def connect_ssh(self):
@@ -73,8 +73,9 @@ class CyberTerminal(Static):
         if self.channel and self.channel.recv_ready():
             try:
                 data = self.channel.recv(4096).decode('utf-8', errors='ignore')
-                self.stream.feed(data)
-                self.refresh()
+                if data:  # Only process if we actually got data
+                    self.stream.feed(data)
+                    self.refresh()
             except Exception:
                 pass
 
@@ -83,9 +84,9 @@ class CyberTerminal(Static):
         return "\n".join(self.terminal_screen.display)
 
     def on_key(self, event: events.Key) -> None:
-        # 1. Focus Escape Hatch (Priority)
-        if event.key in ["ctrl+h", "ctrl+l"]:
-            return 
+        # Let app-level shortcuts pass through (q for quit, ctrl+s for save, etc.)
+        if event.key in ["q", "ctrl+h", "ctrl+l", "ctrl+s", "ctrl+w"]:
+            return  # Don't intercept these, let the app handle them
 
         # 2. Check if the connection is alive
         if not self.channel or self.channel.closed:
@@ -110,7 +111,7 @@ class CyberTerminal(Static):
             # Handle standard character input
             elif event.character:
                 self.channel.send(event.character)
-            
+
             # Prevent Textual from using the key for UI navigation
             event.stop()
         except (socket.error, EOFError):
@@ -118,7 +119,26 @@ class CyberTerminal(Static):
 
     def on_unmount(self):
         """Clean up connection when the widget is removed."""
+        self.close_ssh()
+
+    def close_ssh(self):
+        """Close the SSH connection."""
         if self.channel:
             self.channel.close()
         if self.client:
             self.client.close()
+
+    def save_session(self, filename=None):
+        """Save the terminal session to a text file."""
+        if not filename:
+            import datetime
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"session_{self.config.name}_{timestamp}.txt"
+
+        try:
+            content = "\n".join(self.terminal_screen.display)
+            with open(filename, "w") as f:
+                f.write(content)
+            return filename
+        except Exception as e:
+            return None

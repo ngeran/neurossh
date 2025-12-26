@@ -1,0 +1,100 @@
+admin@cRPD> configure                                                                                                   
+Entering configuration mode                                                                                             
+Users currently editing the configuration:                                                                              
+  root terminal pts/0 (pid 602) on since 2025-12-26 00:35:36 UTC, idle 01:14:36                                         
+      [edit]                                                                                                            
+                                                                                                                        
+[edit]                                                                                                                  
+admin@cRPD# run show interfaces terse | no-more                                                                         
+Interface               Admin Link Proto    Local                 Remote                                                
+ip6tnl0                                                                                                                 
+ip6tnl0.0               UP    UNKNOWN inet6 fe80::200:ff:fe00:0/64                                                      
+                                            fe80::7080:3dff:fe82:5833/64                                                
+tunl0                                                                                                                   
+tunl0.0                 UP    UNKNOWN                                                                                   
+sit0                                                                                                                    
+sit0.0                  UP    UNKNOWN inet6 ::192.168.100.4/96                                                          
+                                            ::127.0.0.1/96                                                              
+lo                                                                                                                      
+lo.0                    UP    UNKNOWN inet  127.0.0.1/8                                                                 
+                                   inet6    ::1/128                                                                     
+lo0.0                   UP    UNKNOWN inet6 fe80::5455:5cff:fe2d:b99b/64                                                
+gretap0                                                                                                                 
+gretap0.0               DOWN  DOWN                                                                                      
+erspan0                                                                                                                 
+erspan0.0               DOWN  DOWN                                                                                      
+irb                                                                                                                     
+irb.0                   UP    UNKNOWN inet6 fe80::d85b:31ff:feb3:397/64                                                 
+eth0                                                                                                                    
+eth0.0                  UP    UP   inet     192.168.100.4/24                                                            
+                                   inet6    fe80::b434:aff:fe17:8d91/64                                                 
+gre0                                                                                                                    
+gre0.0                  UP    UNKNOWN inet6 fe80::200:ff:fe00:800/64                                                    
+                                            fe80::c0a8:6404/64                                                          
+                                            fe80::7f00:1/64                                                             
+lsi                                                                                                                     
+lsi.0                   UP    UNKNOWN inet6 fe80::384b:8eff:fea9:6633/64                                                
+                                                                                                                        
+[edit]                                                                                                                  
+admin@cRPD#                                                                                                             
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        

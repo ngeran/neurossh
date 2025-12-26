@@ -1,133 +1,62 @@
-/* GLOBAL SETTINGS */
-Screen { 
-    background: #050505; 
-    color: #d1d1d1; 
-}
+Screen { background: #020202; color: #94a3b8; }
+#sidebar { width: 32; background: #050505; border-right: solid #1e1b4b; }
+#sidebar-title { background: #020202; color: #6d28d9; text-align: left; text-style: bold; padding: 1 2; border-bottom: solid #1e1b4b; }
+#session-tree { background: #050505; color: #475569; }
+#session-tree:focus { color: #f8fafc; text-style: bold; }
 
-/* SIDEBAR & TREE */
-#sidebar { 
-    width: 32; 
-    background: #0a0a0c; 
-    border-right: double #5f5faf; 
-}
+/* TABS VISIBILITY */
+Tabs { background: #020202; height: 3; border-bottom: none; }
+Tabs > Underline { background: #6d28d9; height: 1; }
+Tab, Tab > Label { color: #94a3b8 !important; background: #050505; }
+Tab.-active, Tab.-active > Label { background: #0f172a; color: #10b981 !important; text-style: bold italic; }
 
-#sidebar-title {
-    background: #1a1a2e; 
-    color: #00ffff; 
-    text-align: center;
-    text-style: bold; 
-    padding: 1; 
-    border-bottom: solid #5f5faf;
-}
-
-#session-tree {
-    background: #0a0a0c;
-    color: #8787af;
-}
-
-#session-tree:focus { 
-    border: solid #00ffff; 
-    background: #0d0d15; 
-    color: #ffffff;
-}
-
-/* --- TABS SYSTEM --- */
-Tabs { 
-    background: #0a0a0c; 
-    height: 3; 
-    border-bottom: solid #5f5faf;
-}
-
-/* Fix: Neutralize the built-in Tabs bar background */
-Tabs > TabsBar {
-    background: #0a0a0c;
-}
-
-/* Fix: Ensure the built-in underline matches your cyan */
-Tabs > Underline {
-    background: #00ffff;
+/* Close button on tabs */
+.close-tab-btn {
+    min-width: 2;
     height: 1;
-}
-
-Tab {
-    color: #4e4e70 !important;
-    background: #0a0a0c;
-    text-style: none;
+    padding: 0 1;
+    margin-left: 1;
+    background: transparent;
+    color: #94a3b8;
     border: none;
-    padding: 0 2;
+    text-style: bold;
 }
 
-/* ACTIVE TAB: Cyan Title + Neon Cyan tall line */
-Tab.-active { 
-    background: #1a1a2e; 
-    color: #00ffff !important; 
-    text-style: bold; 
-    border-bottom: tall #00ffff; 
+.close-tab-btn:hover {
+    background: #7c3aed;
+    color: white;
 }
 
-/* ROLLOVER: Pure White Text */
-Tab:hover {
-    color: #ffffff !important;
-    background: #1a1a2e;
+Tab.-active .close-tab-btn {
+    color: #10b981;
 }
 
-/* --- TERMINAL --- */
-CyberTerminal { 
-    background: #000; 
-    color: #e4e4e4; 
-    height: 1fr; 
-    padding: 1; 
+Tab.-active .close-tab-btn:hover {
+    background: #dc2626;
+    color: white;
 }
 
-CyberTerminal:focus { 
-    border: double #00ffff; 
+/* TERMINAL - Scrollable container */
+VerticalScroll {
+    height: 1fr;
+    background: #000000;
 }
 
-/* --- MODALS & INPUTS --- */
-#modal-dialog {
-    width: 60; 
-    height: auto; 
-    background: #0a0a0c; 
-    border: thick #5f5faf;
-    padding: 1 2; 
-    /* Ensure modal stays centered */
-    align: center middle;
+CyberTerminal {
+    background: #000000;
+    color: #cbd5e1;
+    padding: 1;
 }
 
-#modal-title { 
-    color: #00ffff; 
-    text-align: center; 
-    margin-bottom: 1; 
-    text-style: bold; 
+VerticalScroll:focus-within {
+    border: tall #6d28d9;
 }
 
-.field-label { 
-    color: #5f5faf; 
-    margin-top: 1; 
-    text-style: bold; 
-}
-
-Input, Select { 
-    margin-bottom: 1; 
-    background: #000; 
-    color: #00ffff; 
-    border: tall #1a1a2e; 
-}
-
-/* Fixed content-align for button rows */
-.button-row { 
-    content-align: center middle; 
-    width: 100%; 
-    height: 3; 
-    margin-top: 1; 
-}
-
-.btn-neuro-confirm { background: #5f5faf; color: white; margin: 0 1; }
-.btn-neuro-cancel { background: #1a1a2e; color: #8787af; margin: 0 1; }
-
-/* Scrollbar customization for a cleaner look */
-* {
-    scrollbar-color: #5f5faf;
-    scrollbar-color-hover: #00ffff;
-    scrollbar-size: 1 1;
-}
+#modal-dialog { width: 60; background: #0a0a0a; border: tall #1e293b; padding: 1 2; }
+#modal-title { color: #f8fafc; text-style: bold; margin-bottom: 1; text-align: center; }
+.field-label { color: #6366f1; margin-top: 1; }
+Input, Select { background: #000000; color: #10b981; border: solid #1e293b; margin-bottom: 1; }
+Input:focus, Select:focus { border: solid #6d28d9; }
+.button-row { margin-top: 1; height: 3; content-align: center middle; }
+.btn-neuro-confirm { background: #6d28d9; color: white; }
+.btn-neuro-cancel { background: #1e293b; color: #94a3b8; }

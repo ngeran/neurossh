@@ -10,6 +10,15 @@ from textual import on, events
 # Importing your project-specific modules
 from models import SessionConfig, LOCAL_VAULT, IDENTITY_FILE, get_all_profiles
 from terminal import CyberTerminal
+from textual.containers import VerticalScroll, Horizontal
+from textual.widgets import Tabs, Tab, Button
+from textual import on
+
+# --- CUSTOM TAB WITH CLOSE BUTTON ---
+
+class ClosableTab(Tab):
+    """A Tab widget with close button (using Ctrl+W or middle-click to close)"""
+    pass
 
 # --- MODALS ---
 
@@ -121,13 +130,14 @@ class NeuroSSH(App):
     TITLE = "NEURO_SSH // PORTABLE"
     CSS_PATH = "neuro.tcss"
     BINDINGS = [
-        ("ctrl+n", "new_session", "New"), 
+        ("ctrl+n", "new_session", "New"),
         ("ctrl+i", "manage_ids", "Identity"),
-        ("ctrl+w", "confirm_close_tab", "Kill Tab"), 
-        ("q", "quit", "Quit"), 
-        ("ctrl+h", "focus_sidebar", "Sidebar"), 
-        ("ctrl+l", "focus_terminal", "Terminal"), 
-        ("e", "edit_node", "Edit"), 
+        ("ctrl+w", "confirm_close_tab", "Kill Tab"),
+        ("ctrl+s", "save_session", "Save"),
+        ("q", "quit", "Quit"),
+        ("ctrl+h", "focus_sidebar", "Sidebar"),
+        ("ctrl+l", "focus_terminal", "Terminal"),
+        ("e", "edit_node", "Edit"),
         ("d", "delete_node", "Delete"),
         ("f1", "help", "Help")
     ]
@@ -188,11 +198,15 @@ class NeuroSSH(App):
         tabs, stack = self.query_one("#session-tabs"), self.query_one("#view-stack")
         tid = f"id_{config.id}"
         label = str(config.name or config.host)
-        
+
         if tid not in [t.id for t in tabs.query("Tab")]:
-            tabs.add_tab(Tab(label, id=tid))
-            stack.mount(CyberTerminal(config, id=tid))
-        
+            # Use ClosableTab instead of regular Tab
+            tabs.add_tab(ClosableTab(label, id=tid))
+            # Wrap terminal in scrollable container
+            term = CyberTerminal(config)
+            scroll_container = VerticalScroll(term, id=tid)
+            stack.mount(scroll_container)
+
         tabs.active = tid
         stack.current = tid
         self.action_focus_terminal()
@@ -210,7 +224,10 @@ class NeuroSSH(App):
         stack = self.query_one("#view-stack")
         if stack.current and stack.current != "splash":
             try:
-                self.query_one(f"#{stack.current}").focus()
+                # Focus the terminal inside the scroll container
+                scroll_container = self.query_one(f"#{stack.current}")
+                terminal = scroll_container.query_one(CyberTerminal)
+                terminal.focus()
             except:
                 pass
 
@@ -227,14 +244,36 @@ class NeuroSSH(App):
         if not tabs.active: return
         self.push_screen(ConfirmModal("Terminate this neural link?"), self.process_tab_closure)
 
+    def close_tab(self, tab_id):
+        """Close a tab and its SSH session (called by ClosableTab close button)"""
+        try:
+            tabs = self.query_one("#session-tabs")
+            stack = self.query_one("#view-stack")
+
+            # Get the scroll container (which holds the terminal)
+            scroll_container = self.query_one(f"#{tab_id}")
+
+            # Close the SSH connection
+            terminal = scroll_container.query_one(CyberTerminal)
+            if terminal:
+                terminal.close_ssh()
+
+            # Remove tab and container
+            tabs.remove_tab(tab_id)
+            scroll_container.remove()
+
+            # Show splash if no tabs left
+            if not tabs.active:
+                stack.current = "splash"
+        except:
+            pass
+
     def process_tab_closure(self, confirmed):
         if not confirmed: return
         tabs = self.query_one("#session-tabs")
         tid = tabs.active
-        terminal = self.query_one(f"#{tid}")
-        tabs.remove_tab(tid)
-        terminal.remove()
-        if not tabs.active: self.query_one("#view-stack").current = "splash"
+        if tid:
+            self.close_tab(tid)
 
     def action_delete_node(self):
         node = self.query_one("#session-tree").cursor_node
@@ -278,9 +317,29 @@ class NeuroSSH(App):
             "[cyan]Management:[/cyan]\n"
             "CTRL+N: New Link  |  E: Edit  |  D: Delete\n"
             "CTRL+I: Identity Vault\n\n"
-            "CTRL+W: Kill Tab  |  Q: Shutdown"
+            "CTRL+W: Kill Tab  |  CTRL+S: Save Session\n"
+            "Q: Shutdown"
         )
         self.push_screen(ConfirmModal(help_text, confirm_text="GOT IT", cancel_text="CLOSE"))
+
+    def action_save_session(self):
+        """Save the current terminal session to a text file"""
+        try:
+            stack = self.query_one("#view-stack")
+            if not stack.current or stack.current == "splash":
+                self.notify("[bold yellow]No active session to save[/bold yellow]")
+                return
+
+            scroll_container = self.query_one(f"#{stack.current}")
+            terminal = scroll_container.query_one(CyberTerminal)
+
+            filename = terminal.save_session()
+            if filename:
+                self.notify(f"[bold green]Session saved to:[/bold green] {filename}")
+            else:
+                self.notify("[bold red]Failed to save session[/bold red]")
+        except Exception as e:
+            self.notify(f"[bold red]Error saving session:[/bold red] {str(e)}")
 
 if __name__ == "__main__":
     NeuroSSH().run()
